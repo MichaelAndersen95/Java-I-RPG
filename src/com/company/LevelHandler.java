@@ -1,46 +1,85 @@
 package com.company;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Scanner;
+
 public class LevelHandler {
 
-    public void loadLevel() {
+    private PlayerHandler playerHandler = new PlayerHandler();
 
-        Integer level1 [] [] = {
-                { 0, 0, 2, 0, 0},
-                { 0, 2, 2, 0, 0},
-                { 0, 2, 0, 0, 0},
-                { 0, 2, 2, 0, 0},
-                { 0, 0, 1, 0, 0}
-        };
-        System.out.println("\n### Before ###\n");
-        showMap(level1);
-        changePositionTest(level1);
-    }
+    public String[][] loadLevelFromFile(String filename) throws FileNotFoundException {
 
-    private void showMap(Integer[][] level) {
-        Integer x, y;
+        File inFile = new File(filename);
+        Scanner in = new Scanner(inFile);
 
-        for (x = 0; x < 5; x++) {
-            for (y = 0; y < 5; y++)
-                System.out.print(level[x][y] + "  ");
-            System.out.println();
+        Integer intLength = 0;
+        String[] length = in.nextLine().trim().split("\\s+");
+        for (Integer i = 0; i < length.length; i++) {
+            intLength++;
         }
+
+        in.close();
+
+        String[][] level = new String[intLength][intLength];
+        in = new Scanner(inFile);
+
+        Integer lineCount = 0;
+        while (in.hasNextLine()) {
+            String[] currentLine = in.nextLine().trim().split("\\s+");
+            for (Integer i = 0; i < currentLine.length; i++) {
+                level[lineCount][i] = (currentLine[i]);
+            }
+            lineCount++;
+        }
+
+        level[4][2] = "X";
+
+        return level;
+
     }
 
-    private void changePositionTest(Integer[][] level) {
-        // moves player one "tile" forward
-        level[3][2] = 1;
-        level[4][2] = 2;
-        System.out.print("\n### After ###\n");
-        showMap(level);
+    public void showLevels() {
+        System.out.println("Please choose a level");
+
+        Menu menu = new Menu();
+
+        URL url = LevelHandler.class.getResource("Levels/");
+        if (url == null) {
+            // error - missing folder
+            System.out.print("Can't find Levels folder");
+        } else {
+            File dir = null;
+            try {
+                dir = new File(url.toURI());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+            for (File nextFile : dir.listFiles()) {
+                // Add each level to menu
+
+                menu.Add(nextFile.getName(), new MenuCallback() {
+                    public void Invoke() {
+                        System.out.println("Loading "+nextFile.getName()+"\n");
+
+                        try {
+                            String level[][] = loadLevelFromFile(nextFile.getPath());
+                            Integer y = 4;
+                            Integer x = 2;
+                            playerHandler.showMap(level);
+                            playerHandler.playerMove(level, y, x);
+                        } catch (FileNotFoundException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+            }
+        }
+        menu.Show();
     }
 
-    // moves player one "tile" and updates map
-    public void moveForward() {}
-
-    public void moveBack() {}
-
-    public void moveLeft() {}
-
-    public void moveRight() {}
 
 }
