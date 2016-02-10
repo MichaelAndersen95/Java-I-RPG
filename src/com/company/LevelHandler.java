@@ -35,7 +35,7 @@ public class LevelHandler {
             lineCount++;
         }
 
-        level[4][2] = "X";
+        level[6][3] = "X";
 
         return level;
 
@@ -57,8 +57,9 @@ public class LevelHandler {
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
+
+            // Add each level to menu
             for (File nextFile : dir.listFiles()) {
-                // Add each level to menu
 
                 menu.Add(nextFile.getName(), new MenuCallback() {
                     public void Invoke() {
@@ -66,8 +67,8 @@ public class LevelHandler {
 
                         try {
                             String level[][] = loadLevelFromFile(nextFile.getPath());
-                            Integer y = 4;
-                            Integer x = 2;
+                            Integer y = 6;
+                            Integer x = 3;
                             playerHandler.showMap(level);
                             playerHandler.playerMove(level, y, x);
                         } catch (FileNotFoundException e){

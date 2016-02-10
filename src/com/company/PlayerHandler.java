@@ -1,72 +1,101 @@
 package com.company;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 public class PlayerHandler {
 
-    //LevelHandler levelHandler = new LevelHandler();
-    Integer x = 2;
-    Integer y = 4;
+    private Player player = Player.newPlayer();
 
     public void playerMove(String[][] level, Integer y, Integer x) {
 
-        //levelHandler.showMap(level);
-
         Menu movementChoice = new Menu();
-        movementChoice.Add("Move north", new MenuCallback() {
+        movementChoice.Add("Move up", new MenuCallback() {
             public void Invoke() {
                 // move north
-                movePlayer(level, y, x, 1);
+                //player.move(level, y, x, 1);
+                setPlayerPos(level, y, x, 1);
             }
         });
-        movementChoice.Add("Move south", new MenuCallback() {
+        movementChoice.Add("Move down", new MenuCallback() {
             public void Invoke() {
                 // move south
-                movePlayer(level, y, x, 2);
+                setPlayerPos(level, y, x, 2);
             }
         });
-        movementChoice.Add("Move east", new MenuCallback() {
+        movementChoice.Add("Move right", new MenuCallback() {
             public void Invoke() {
                 // move east
-                movePlayer(level, y, x, 3);
+                setPlayerPos(level, y, x, 3);
             }
         });
-        movementChoice.Add("Move west", new MenuCallback() {
+        movementChoice.Add("Move left", new MenuCallback() {
             public void Invoke() {
                 // move west
-                movePlayer(level, y, x, 4);
+                setPlayerPos(level, y, x, 4);
             }
         });
         movementChoice.Show();
     }
 
-    public void movePlayer(String[][] level, Integer y, Integer x, Integer direction) {
+    public void setPlayerPos(String[][] level, Integer y, Integer x, Integer direction) {
+
+        MonsterHandler monsterHandler = new MonsterHandler();
 
         level[y][x] = ".";
 
-        System.out.print(direction);
+        Integer currX = x;
+        Integer currY = y;
 
         switch (direction) {
-            case 1 :
+            case 1:
                 y--;
                 break;
-            case 2 :
+            case 2:
                 y++;
                 break;
-            case 3 :
-                x--;
-                break;
-            case 4 :
+            case 3:
                 x++;
                 break;
-            default :
+            case 4:
+                x--;
+                break;
+            default:
                 System.exit(1);
                 break;
         }
 
-        level[y][x] = "X";
+        switch (level[y][x]) {
+            case "#":
+                System.out.print("You walked into a wall, try walking another way.");
 
-        showMap(level);
-        playerMove(level, y, x);
+                level[currY][currX] = "X";
+                showMap(level);
+                playerMove(level, currY, currX);
+                break;
+            case "+":
+                System.out.println("You ran into a monster!");
 
+                // not working
+                monsterHandler.startBattle(player);
+
+
+                level[y][x] = "X";
+                showMap(level);
+                playerMove(level, y, x);
+
+                break;
+            case "O":
+                //end of level
+                System.out.println("Congratulations!\nYou survived this level, please select another!");
+
+                // goto main menu
+                break;
+            default:
+                level[y][x] = "X";
+                showMap(level);
+                playerMove(level, y, x);
+                break;
+        }
     }
 
     public void showMap(String[][] level) {
@@ -74,8 +103,8 @@ public class PlayerHandler {
 
         System.out.print("\n\n");
 
-        for (i = 0; i < 5; i++) {
-            for (j = 0; j < 5; j++)
+        for (i = 0; i < level.length; i++) {
+            for (j = 0; j < level.length; j++)
                 System.out.print(level[i][j] + "  ");
             System.out.println();
         }
