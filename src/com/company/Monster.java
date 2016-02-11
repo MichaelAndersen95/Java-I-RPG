@@ -8,32 +8,32 @@ public class Monster extends Character{
     public static Monster newMonster() {
         Integer i;
         Random random = new Random();
-        i = random.nextInt(2);
+        i = random.nextInt(3);
+        System.out.println(i);
 
         if (i == 0) {
-            return new Monster("1", 5, 1, "punched", 1, 3);
+            return new Monster("Deadly Giant Snail", 5, 1, "shot slime at", 1, 2);
         } else if (i == 1) {
-            return new Monster("2", 10, 2, "kicked", 3, 5);
+            return new Monster("Demon of the Sock Drawer", 10, 2, "threw a sock at", 3, 4);
         } else {
-            return new Monster("3", 15, 3, "stomped", 4, 6);
+            return new Monster("Giant Zombie Duck", 15, 3, "kicked", 4, 6);
         }
     }
 
     public void defend(Player player) {
-        Integer attackPoints = player.attack();
-        hitPoints = (hitPoints > attackPoints) ? hitPoints - attackPoints : 0;
-        System.out.printf(" %s %s you causing %s HP damage (%s)\n", name, attack, attackPoints, getHealth());
-        if (hitPoints == 0) {
-            System.out.printf("You defeated %s\n", name);
+        Integer attackPoints = attack();
+
+        player.health = player.health - attackPoints;
+
+        System.out.printf(" %s %s you causing %s HP damage (You have %s HP left)\n", name, attack, attackPoints, player.getHealth());
+
+        if (player.health < 1) {
+            System.out.printf("You was killed by %s\n", name);
         }
     }
 
     public String getName() {
         return name;
-    }
-
-    public String getHealth() {
-        return "Monster health: "+health;
     }
 
     private Monster(String name, Integer health, Integer level, String attack, Integer minDamage, Integer maxDamage) {

@@ -6,11 +6,11 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class LevelHandler {
+public class MapLoader {
 
     private PlayerHandler playerHandler = new PlayerHandler();
 
-    public String[][] loadLevelFromFile(String filename) throws FileNotFoundException {
+    public String[][] loadMapFromFile(String filename) throws FileNotFoundException {
 
         File inFile = new File(filename);
         Scanner in = new Scanner(inFile);
@@ -20,36 +20,34 @@ public class LevelHandler {
         for (Integer i = 0; i < length.length; i++) {
             intLength++;
         }
-
         in.close();
 
-        String[][] level = new String[intLength][intLength];
+        String[][] map = new String[intLength][intLength];
         in = new Scanner(inFile);
 
         Integer lineCount = 0;
         while (in.hasNextLine()) {
             String[] currentLine = in.nextLine().trim().split("\\s+");
             for (Integer i = 0; i < currentLine.length; i++) {
-                level[lineCount][i] = (currentLine[i]);
+                map[lineCount][i] = (currentLine[i]);
             }
             lineCount++;
         }
 
-        level[6][3] = "X";
+        map[6][3] = "X";
 
-        return level;
-
+        return map;
     }
 
-    public void showLevels() {
-        System.out.println("Please choose a level");
+    public void showMaps() {
+        System.out.println("Please choose a map");
 
         Menu menu = new Menu();
 
-        URL url = LevelHandler.class.getResource("Levels/");
+        URL url = MapLoader.class.getResource("Maps/");
         if (url == null) {
             // error - missing folder
-            System.out.print("Can't find Levels folder");
+            System.out.print("Can't find Maps folder");
         } else {
             File dir = null;
             try {
@@ -66,7 +64,7 @@ public class LevelHandler {
                         System.out.println("Loading "+nextFile.getName()+"\n");
 
                         try {
-                            String level[][] = loadLevelFromFile(nextFile.getPath());
+                            String level[][] = loadMapFromFile(nextFile.getPath());
                             Integer y = 6;
                             Integer x = 3;
                             playerHandler.showMap(level);
@@ -74,13 +72,10 @@ public class LevelHandler {
                         } catch (FileNotFoundException e){
                             e.printStackTrace();
                         }
-
                     }
                 });
             }
         }
         menu.Show();
     }
-
-
 }

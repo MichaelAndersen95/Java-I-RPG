@@ -1,47 +1,40 @@
 package com.company;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 public class PlayerHandler {
 
     private Player player = Player.newPlayer();
 
-    public void playerMove(String[][] level, Integer y, Integer x) {
+    public void playerMove(String[][] map, Integer y, Integer x) {
 
         Menu movementChoice = new Menu();
         movementChoice.Add("Move up", new MenuCallback() {
             public void Invoke() {
-                // move north
-                //player.move(level, y, x, 1);
-                setPlayerPos(level, y, x, 1);
+                setPlayerPos(map, y, x, 1);
             }
         });
         movementChoice.Add("Move down", new MenuCallback() {
             public void Invoke() {
-                // move south
-                setPlayerPos(level, y, x, 2);
+                setPlayerPos(map, y, x, 2);
             }
         });
         movementChoice.Add("Move right", new MenuCallback() {
             public void Invoke() {
-                // move east
-                setPlayerPos(level, y, x, 3);
+                setPlayerPos(map, y, x, 3);
             }
         });
         movementChoice.Add("Move left", new MenuCallback() {
             public void Invoke() {
-                // move west
-                setPlayerPos(level, y, x, 4);
+                setPlayerPos(map, y, x, 4);
             }
         });
         movementChoice.Show();
     }
 
-    public void setPlayerPos(String[][] level, Integer y, Integer x, Integer direction) {
+    public void setPlayerPos(String[][] map, Integer y, Integer x, Integer direction) {
 
-        MonsterHandler monsterHandler = new MonsterHandler();
+        BattleHandler battleHandler = new BattleHandler();
 
-        level[y][x] = ".";
+        map[y][x] = ".";
 
         Integer currX = x;
         Integer currY = y;
@@ -64,24 +57,20 @@ public class PlayerHandler {
                 break;
         }
 
-        switch (level[y][x]) {
+        switch (map[y][x]) {
             case "#":
                 System.out.print("You walked into a wall, try walking another way.");
 
-                level[currY][currX] = "X";
-                showMap(level);
-                playerMove(level, currY, currX);
+                map[currY][currX] = "X";
+                showMap(map);
+                playerMove(map, currY, currX);
                 break;
             case "+":
-                System.out.println("You ran into a monster!");
+                battleHandler.startBattle(player);
 
-                // not working
-                monsterHandler.startBattle(player);
-
-
-                level[y][x] = "X";
-                showMap(level);
-                playerMove(level, y, x);
+                map[y][x] = "X";
+                showMap(map);
+                playerMove(map, y, x);
 
                 break;
             case "O":
@@ -91,26 +80,25 @@ public class PlayerHandler {
                 // goto main menu
                 break;
             default:
-                level[y][x] = "X";
-                showMap(level);
-                playerMove(level, y, x);
+                map[y][x] = "X";
+                showMap(map);
+                playerMove(map, y, x);
                 break;
         }
     }
 
-    public void showMap(String[][] level) {
+    public void showMap(String[][] map) {
         Integer i, j;
 
         System.out.print("\n\n");
 
-        for (i = 0; i < level.length; i++) {
-            for (j = 0; j < level.length; j++)
-                System.out.print(level[i][j] + "  ");
+        for (i = 0; i < map.length; i++) {
+            for (j = 0; j < map.length; j++)
+                System.out.print(map[i][j] + "  ");
             System.out.println();
         }
 
         System.out.print("\n");
 
     }
-
 }

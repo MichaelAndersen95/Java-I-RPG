@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class Character {
     public Integer health;
-    public Integer hitPoints;
     public Integer level;
     public String attack;
     public Integer minDamage;
@@ -16,9 +15,14 @@ public class Character {
     }
 
     public Boolean isAlive() {
-        return null;
+        return health > 0;
     }
 
+    public Integer getHealth() {
+        return health;
+    }
 
-
+    public Integer getLevel() {
+        return level;
+    }
 }

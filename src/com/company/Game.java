@@ -1,15 +1,14 @@
 package com.company;
 
 public class Game {
-    private LevelHandler levelHandler = new LevelHandler();
+    private MapLoader mapLoader = new MapLoader();
 
     public void start() {
 
         Menu mainMenu = new Menu();
-        mainMenu.Add("Show levels", new MenuCallback() {
+        mainMenu.Add("Show maps", new MenuCallback() {
             public void Invoke() {
-                // Show levels
-                levelHandler.showLevels();
+                mapLoader.showMaps();
 
             }
         });
@@ -23,7 +22,7 @@ public class Game {
         mainMenu.Show();
 
 
-        //levelHandler.showMap(level, y, x);
+        //mapLoader.showMap(level, y, x);
 
 
     }
