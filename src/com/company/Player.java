@@ -3,13 +3,15 @@ package com.company;
 public class Player extends Character {
 
     private Integer xp;
-
     private Integer numOfHeals = 4;
-
     public static Player newPlayer() {
-        return new Player(10, 1, "punch", 2, 3, 0);
+        return new Player(15, 1, "punch", 2, 3, 0);
     }
 
+    /**
+     *
+     * @param monster the monster is "attacked" by the player
+     */
     public void defend(Monster monster) {
         Integer attackPoints = attack();
 
@@ -21,10 +23,21 @@ public class Player extends Character {
             System.out.printf("\nYou defeated %s (Level %s)\n", monster.getName(), monster.getLevel());
             addXP(5);
             System.out.println("You gained 5 xp, your level is now "+getLevel());
+            System.out.println("You earned 1 heal from the monster");
+            numOfHeals++;
         }
 
     }
 
+    /**
+     *
+     * @param health players health
+     * @param level players level
+     * @param attack players attack
+     * @param minDamage players minimum damage
+     * @param maxDamage players maximum damage
+     * @param xp players XP
+     */
     private Player(Integer health, Integer level, String attack, Integer minDamage, Integer maxDamage, Integer xp) {
         this.health = health;
         this.level = level;
@@ -34,14 +47,12 @@ public class Player extends Character {
         this.xp = xp;
     }
 
-    @Override
-    public Boolean isAlive() {
-        return health > 0;
-    }
-
+    /**
+     * heals the player 7 hp if the player has any heals left
+     */
     public void heal() {
         if (numOfHeals > 0) {
-            health += 5;
+            health += 7;
             System.out.printf("Your health is now: %s (%s heals left)\n", health, numOfHeals);
             numOfHeals--;
         } else {
@@ -49,11 +60,11 @@ public class Player extends Character {
         }
     }
 
-    public Integer getXP() {
-        return xp;
-    }
-
-    public void addXP(Integer newXP) {
+    /**
+     *
+     * @param newXP is added to the XP player already have
+     */
+    private void addXP(Integer newXP) {
         xp = xp + newXP;
 
         switch (xp) {
@@ -84,6 +95,10 @@ public class Player extends Character {
         }
     }
 
+    /**
+     *
+     * @return players current level
+     */
     public Integer getLevel() {
         return level;
     }

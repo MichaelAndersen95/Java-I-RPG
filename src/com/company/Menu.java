@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Menu {
-    private ArrayList<MenuItem> items = new ArrayList<MenuItem>();
+class Menu {
+    private final ArrayList<MenuItem> items = new ArrayList<>();
 
     private class MenuItem {
-        private MenuCallback menuCallback;
-        private String text;
+        private final MenuCallback menuCallback;
+        private final String text;
 
 
         public MenuItem(String text, MenuCallback menuCallback) {
@@ -43,7 +43,7 @@ public class Menu {
 
         try {
             chosen = in.nextInt();
-        } catch (Exception ex) { }
+        } catch (Exception ignored) { }
 
         try
         {
@@ -58,7 +58,7 @@ public class Menu {
                 Runtime.getRuntime().exec("clear");
             }
         }
-        catch (final Exception e) { }
+        catch (final Exception ignored) { }
 
         if (chosen > items.size() || chosen < 1) {
             System.out.println("Invalid option.\nPress enter to continue...");

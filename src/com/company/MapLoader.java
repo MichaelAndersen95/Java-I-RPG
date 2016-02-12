@@ -6,18 +6,23 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
 
-public class MapLoader {
+class MapLoader {
 
-    private PlayerHandler playerHandler = new PlayerHandler();
+    private final PlayerHandler playerHandler = new PlayerHandler();
 
-    public String[][] loadMapFromFile(String filename) throws FileNotFoundException {
+    /**
+     * @param filename loads the specified map from the Maps folder
+     * @return returns a map
+     * @throws FileNotFoundException
+     */
+    private String[][] loadMapFromFile(String filename) throws FileNotFoundException {
 
         File inFile = new File(filename);
         Scanner in = new Scanner(inFile);
 
         Integer intLength = 0;
         String[] length = in.nextLine().trim().split("\\s+");
-        for (Integer i = 0; i < length.length; i++) {
+        for (String aLength : length) {
             intLength++;
         }
         in.close();
@@ -28,9 +33,7 @@ public class MapLoader {
         Integer lineCount = 0;
         while (in.hasNextLine()) {
             String[] currentLine = in.nextLine().trim().split("\\s+");
-            for (Integer i = 0; i < currentLine.length; i++) {
-                map[lineCount][i] = (currentLine[i]);
-            }
+            System.arraycopy(currentLine, 0, map[lineCount], 0, currentLine.length);
             lineCount++;
         }
 
@@ -39,7 +42,12 @@ public class MapLoader {
         return map;
     }
 
-    public void showMaps() {
+    /**
+     * Puts each map into a menu
+     * @param player sends the player object to playerMove
+     *
+     */
+    public void showMaps(Player player) {
         System.out.println("Please choose a map");
 
         Menu menu = new Menu();
@@ -59,19 +67,17 @@ public class MapLoader {
             // Add each level to menu
             for (File nextFile : dir.listFiles()) {
 
-                menu.Add(nextFile.getName(), new MenuCallback() {
-                    public void Invoke() {
-                        System.out.println("Loading "+nextFile.getName()+"\n");
+                menu.Add(nextFile.getName(), () -> {
+                    System.out.println("Loading "+nextFile.getName()+"\n");
 
-                        try {
-                            String level[][] = loadMapFromFile(nextFile.getPath());
-                            Integer y = 6;
-                            Integer x = 3;
-                            playerHandler.showMap(level);
-                            playerHandler.playerMove(level, y, x);
-                        } catch (FileNotFoundException e){
-                            e.printStackTrace();
-                        }
+                    try {
+                        String level[][] = loadMapFromFile(nextFile.getPath());
+                        Integer y = 6;
+                        Integer x = 3;
+                        playerHandler.showMap(level);
+                        playerHandler.playerMove(level, y, x, player);
+                    } catch (FileNotFoundException e){
+                        e.printStackTrace();
                     }
                 });
             }

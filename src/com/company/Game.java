@@ -1,29 +1,27 @@
 package com.company;
 
-public class Game {
-    private MapLoader mapLoader = new MapLoader();
+class Game {
+    private final MapLoader mapLoader = new MapLoader();
+    private final Player player = Player.newPlayer();
 
+
+    /**
+     * Start the main loop the game is running in, and show the main menu to the player
+     */
     public void start() {
 
-        Menu mainMenu = new Menu();
-        mainMenu.Add("Show maps", new MenuCallback() {
-            public void Invoke() {
-                mapLoader.showMaps();
+        Boolean gameStarted = true;
 
-            }
-        });
+        while (gameStarted) {
 
-        mainMenu.Add("Quit", new MenuCallback() {
-            public void Invoke() {
-                System.exit(0);
-            }
-        });
+            Menu mainMenu = new Menu();
+            mainMenu.Add("Show maps", () -> mapLoader.showMaps(player));
 
-        mainMenu.Show();
+            mainMenu.Add("Quit", () -> System.exit(0));
 
+            mainMenu.Show();
 
-        //mapLoader.showMap(level, y, x);
-
+        }
 
     }
 
