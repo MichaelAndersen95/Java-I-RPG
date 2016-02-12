@@ -9,7 +9,6 @@ public class Player extends Character {
     }
 
     /**
-     *
      * @param monster the monster is "attacked" by the player
      */
     public void defend(Monster monster) {
@@ -61,7 +60,6 @@ public class Player extends Character {
     }
 
     /**
-     *
      * @param newXP is added to the XP player already have
      */
     private void addXP(Integer newXP) {
