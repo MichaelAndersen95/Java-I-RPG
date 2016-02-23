@@ -25,7 +25,6 @@ class PlayerHandler {
     }
 
     /**
-     *
      * @param map the map to set position in
      * @param y players y position on the map
      * @param x players y position on the map

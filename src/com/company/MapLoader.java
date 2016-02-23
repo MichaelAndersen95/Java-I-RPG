@@ -45,7 +45,6 @@ class MapLoader {
     /**
      * Puts each map into a menu
      * @param player sends the player object to playerMove
-     *
      */
     public void showMaps(Player player) {
         System.out.println("Please choose a map");

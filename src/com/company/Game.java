@@ -22,11 +22,5 @@ class Game {
             mainMenu.Show();
 
         }
-
     }
-
-
-
-
-
 }
