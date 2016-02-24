@@ -1,35 +1,27 @@
 package com.company;
 
-class PlayerHandler {
+public class PlayerHandler {
 
     public String[][] aMap;
     Integer prevX;
     Integer prevY;
     Player aPlayer;
 
-    public void moveUp(Integer y, Integer x) {
-        prevY = y;
-        prevX = x;
+    public Integer moveUp(Integer y) {
         y--;
-        checkPosition(y, x);
+        return y;
     }
-    public void moveDown(Integer y, Integer x) {
-        prevY = y;
-        prevX = x;
+    public Integer moveDown(Integer y) {
         y++;
-        checkPosition(y, x);
+        return y;
     }
-    public void moveRight(Integer y, Integer x) {
-        prevY = y;
-        prevX = x;
+    public Integer moveRight(Integer x) {
         x++;
-        checkPosition(y, x);
+        return x;
     }
-    public void moveLeft(Integer y, Integer x) {
-        prevY = y;
-        prevX = x;
+    public Integer moveLeft(Integer x) {
         x--;
-        checkPosition(y, x);
+        return x;
     }
 
     /**
@@ -43,13 +35,16 @@ class PlayerHandler {
 
         aMap = map;
         aPlayer = player;
+        prevY = y;
+        prevX = x;
 
         if (aPlayer.isAlive()) {
             Menu movementChoice = new Menu();
-            movementChoice.Add("Move up", () -> moveUp(y, x));
-            movementChoice.Add("Move down", () -> moveDown(y, x));
-            movementChoice.Add("Move right", () -> moveRight(y, x));
-            movementChoice.Add("Move left", () -> moveLeft(y, x));
+
+            movementChoice.Add("Move up", () -> checkPosition(moveUp(y), x));
+            movementChoice.Add("Move down", () -> checkPosition(moveDown(y), x));
+            movementChoice.Add("Move right", () -> checkPosition(y, moveRight(x)));
+            movementChoice.Add("Move left", () -> checkPosition(y, moveLeft(x)));
             movementChoice.Show();
         } else {
             System.out.println("Looks like you died, better luck next time.\n\n");
@@ -75,11 +70,8 @@ class PlayerHandler {
                 System.out.println("Congratulations!\nYou survived this level, please select another!");
                 break;
             default:
-                //aMap[y][x] = "X";
                 setPosition(y, x);
-                //getDirectionChoice(aMap, y, x, aPlayer);
                 break;
-
         }
     }
 
@@ -99,6 +91,7 @@ class PlayerHandler {
      * @param map prints out the map
      */
     public void showMap(String[][] map) {
+
         Integer i, j;
 
         System.out.print("\n\n");
@@ -108,8 +101,6 @@ class PlayerHandler {
                 System.out.print(map[i][j] + "  ");
             System.out.println();
         }
-
         System.out.print("\n");
-
     }
 }
