@@ -2,7 +2,7 @@ package com.company;
 
 class Game {
     private final MapLoader mapLoader = new MapLoader();
-    private final Player player = Player.newPlayer();
+    private final Player player = new Player(15, 1, "punch", 2, 3, 1);
 
 
     /**

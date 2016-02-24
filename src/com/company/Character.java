@@ -2,8 +2,8 @@ package com.company;
 
 import java.util.Random;
 
-class Character {
-    Integer health;
+public class Character {
+    public Integer health;
     Integer level;
     String attack;
     Integer minDamage;
@@ -13,7 +13,7 @@ class Character {
     /**
      * @return amount of hp the damage between the objects minimum and maximum damage
      */
-    Integer attack() {
+    public Integer attack() {
         return random.nextInt(maxDamage - minDamage + 1) + minDamage;
     }
 

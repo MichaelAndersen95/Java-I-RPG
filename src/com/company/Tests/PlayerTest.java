@@ -1,18 +1,17 @@
-package com.company;
+package com.company.Tests;
+
+import com.company.Monster;
+import com.company.Player;
+import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class PlayerTest {
 
-    @org.junit.Test
-    public void testNewPlayer() throws Exception {
-
-    }
-
-    @org.junit.Test
+    @Test
     public void testDefend() throws Exception {
-        Player player = Player.newPlayer();
         Monster monster = Monster.newMonster();
+        Player player = new Player(15, 1, "punch", 2, 3, 1);
         Integer startHP = monster.health;
         player.defend(monster);
         assertNotEquals(startHP, monster.health);
@@ -20,7 +19,7 @@ public class PlayerTest {
 
     @org.junit.Test
     public void testHeal() throws Exception {
-        Player player = Player.newPlayer();
+        Player player = new Player(15, 1, "punch", 2, 3, 1);
         Integer expected = 22;
         player.heal();
         assertEquals(expected, player.health);
@@ -28,7 +27,7 @@ public class PlayerTest {
 
     @org.junit.Test
     public void testGetLevel() throws Exception {
-        Player player = Player.newPlayer();
+        Player player = new Player(15, 1, "punch", 2, 3, 1);
         assertEquals(1, player.getLevel(), 0);
     }
 }

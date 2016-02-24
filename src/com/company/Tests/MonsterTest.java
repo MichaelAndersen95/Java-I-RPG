@@ -1,5 +1,7 @@
-package com.company;
+package com.company.Tests;
 
+import com.company.Monster;
+import com.company.Player;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,8 +16,8 @@ public class MonsterTest {
 
     @Test
     public void testDefend() throws Exception {
+        Player player = new Player(15, 1, "punch", 2, 3, 1);
         Monster monster = Monster.newMonster();
-        Player player = Player.newPlayer();
         Integer startHP = player.health;
         monster.defend(player);
         assertNotEquals(startHP, player.health);

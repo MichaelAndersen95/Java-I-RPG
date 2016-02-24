@@ -4,9 +4,6 @@ public class Player extends Character {
 
     private Integer xp;
     private Integer numOfHeals = 4;
-    public static Player newPlayer() {
-        return new Player(15, 1, "punch", 2, 3, 0);
-    }
 
     /**
      * @param monster the monster is "attacked" by the player
@@ -25,19 +22,17 @@ public class Player extends Character {
             System.out.println("You earned 1 heal from the monster");
             numOfHeals++;
         }
-
     }
 
     /**
-     *
      * @param health players health
-     * @param level players level
      * @param attack players attack
-     * @param minDamage players minimum damage
-     * @param maxDamage players maximum damage
-     * @param xp players XP
+     * @param level players level
+     * @param maxDamage players max damage
+     * @param minDamage players min damage
+     * @param xp players xp
      */
-    private Player(Integer health, Integer level, String attack, Integer minDamage, Integer maxDamage, Integer xp) {
+    public Player(Integer health, Integer level, String attack, Integer minDamage, Integer maxDamage, Integer xp) {
         this.health = health;
         this.level = level;
         this.attack = attack;

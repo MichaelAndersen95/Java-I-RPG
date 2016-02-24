@@ -6,7 +6,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Scanner;
 
-class MapLoader {
+public class MapLoader {
 
     private final PlayerHandler playerHandler = new PlayerHandler();
 
@@ -15,7 +15,7 @@ class MapLoader {
      * @return returns a map
      * @throws FileNotFoundException
      */
-    private String[][] loadMapFromFile(String filename) throws FileNotFoundException {
+    public String[][] loadMapFromFile(String filename) throws FileNotFoundException {
 
         File inFile = new File(filename);
         Scanner in = new Scanner(inFile);
@@ -44,7 +44,7 @@ class MapLoader {
 
     /**
      * Puts each map into a menu
-     * @param player sends the player object to playerMove
+     * @param player sends the player object to getDirectionChoice
      */
     public void showMaps(Player player) {
         System.out.println("Please choose a map");
@@ -74,7 +74,7 @@ class MapLoader {
                         Integer y = 6;
                         Integer x = 3;
                         playerHandler.showMap(level);
-                        playerHandler.playerMove(level, y, x, player);
+                        playerHandler.getDirectionChoice(level, y, x, player);
                     } catch (FileNotFoundException e){
                         e.printStackTrace();
                     }
