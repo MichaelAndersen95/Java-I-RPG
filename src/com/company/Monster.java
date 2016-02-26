@@ -3,7 +3,7 @@ package com.company;
 import java.util.Random;
 
 public class Monster extends Character{
-    private final String name;
+    //private final String name;
 
     /**
      *
@@ -32,21 +32,13 @@ public class Monster extends Character{
     public void defend(Player player) {
         Integer attackPoints = attack();
 
-        player.health = player.health - attackPoints;
+        player.health = player.getHealth() - attackPoints;
 
         System.out.printf(" %s %s you causing %s HP damage (You have %s HP left)\n", name, attack, attackPoints, player.getHealth());
 
         if (player.health < 0) {
             System.out.printf("You was killed by %s\n", name);
-
         }
-    }
-
-    /**
-     * @return monster name
-     */
-    public String getName() {
-        return name;
     }
 
     /**

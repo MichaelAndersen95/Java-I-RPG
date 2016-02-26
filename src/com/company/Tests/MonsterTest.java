@@ -16,11 +16,11 @@ public class MonsterTest {
 
     @Test
     public void testDefend() throws Exception {
-        Player player = new Player(15, 1, "punch", 2, 3, 1);
+        Player player = new Player("", 15, 1, "punch", 2, 3, 1);
         Monster monster = Monster.newMonster();
-        Integer startHP = player.health;
+        Integer startHP = player.getHealth();
         monster.defend(player);
-        assertNotEquals(startHP, player.health);
+        assertNotEquals(startHP, player.getHealth());
     }
 
     @Test

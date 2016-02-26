@@ -1,24 +1,47 @@
 package com.company;
 
+import java.sql.SQLException;
+
 public class PlayerHandler {
 
-    public String[][] aMap;
-    Integer prevX;
-    Integer prevY;
-    Player aPlayer;
+    private String[][] aMap;
+    private Integer prevX;
+    private Integer prevY;
+    private Player aPlayer;
+    HighScoreHandler highScoreHandler = new HighScoreHandler();
 
+    /**
+     * move player up
+     * @param y players y position
+     * @return y plus one
+     */
     public Integer moveUp(Integer y) {
         y--;
         return y;
     }
+    /**
+     * move player down
+     * @param y players y position
+     * @return y minus one
+     */
     public Integer moveDown(Integer y) {
         y++;
         return y;
     }
+    /**
+     * move player right
+     * @param x players x position
+     * @return x plus one
+     */
     public Integer moveRight(Integer x) {
         x++;
         return x;
     }
+    /**
+     * move player up
+     * @param x players x position
+     * @return x munis one
+     */
     public Integer moveLeft(Integer x) {
         x--;
         return x;
@@ -47,11 +70,22 @@ public class PlayerHandler {
             movementChoice.Add("Move left", () -> checkPosition(y, moveLeft(x)));
             movementChoice.Show();
         } else {
-            System.out.println("Looks like you died, better luck next time.\n\n");
+            System.out.println("Looks like you died, better luck next time.");
+            System.out.println("----- Your score was: "+player.getScore()+" -----");
+            try {
+                highScoreHandler.saveHighScore(player.getName(), player.getScore());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             System.exit(0);
         }
     }
 
+    /**
+     * checks if the position the player want to go to is possible
+     * @param y players y position
+     * @param x players x position
+     */
     private void checkPosition(Integer y, Integer x) {
 
         BattleHandler battleHandler = new BattleHandler();
@@ -63,6 +97,7 @@ public class PlayerHandler {
                 setPosition(prevY, prevX);
                 break;
             case "+":
+                System.out.println("------- Player Level: "+aPlayer.getLevel()+"-------");
                 battleHandler.startBattle(aPlayer);
                 setPosition(y, x);
                 break;

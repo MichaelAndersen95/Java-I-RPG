@@ -4,6 +4,8 @@ import com.company.MapLoader;
 import com.company.PlayerHandler;
 import org.junit.Test;
 
+import java.net.URL;
+
 import static org.junit.Assert.*;
 
 public class PlayerHandlerTest {
@@ -40,8 +42,8 @@ public class PlayerHandlerTest {
     public void testShowMap() throws Exception {
         MapLoader mapLoader = new MapLoader();
         String[][] loadedMap;
-        //TODO make this load without full path
-        loadedMap = mapLoader.loadMapFromFile("/home/michtheturtle/ownCloud/Skole/Programmering/Java-I-RPG/out/production/Java-I-RPG/com/company/Maps/testmap.txt");
+        URL url = MapLoader.class.getResource("Maps/testmap.txt");
+        loadedMap = mapLoader.loadMapFromFile(url.getFile());
 
         String[][] testingMap = new String[][]{
                 { "#", "#", "#", "O", "#", "#", "#", "#" },

@@ -32,7 +32,8 @@ public class Player extends Character {
      * @param minDamage players min damage
      * @param xp players xp
      */
-    public Player(Integer health, Integer level, String attack, Integer minDamage, Integer maxDamage, Integer xp) {
+    public Player(String name, Integer health, Integer level, String attack, Integer minDamage, Integer maxDamage, Integer xp) {
+        this.name = name;
         this.health = health;
         this.level = level;
         this.attack = attack;
@@ -81,6 +82,7 @@ public class Player extends Character {
                 break;
             case 50:
                 level = 7;
+                System.out.println("You have reached max level");
                 break;
             default:
                 level = 0;
@@ -88,12 +90,11 @@ public class Player extends Character {
         }
     }
 
-    /**
-     *
-     * @return players current level
-     */
-    public Integer getLevel() {
-        return level;
+    public Integer getScore() {
+        return level * xp;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

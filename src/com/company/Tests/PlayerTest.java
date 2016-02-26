@@ -11,23 +11,23 @@ public class PlayerTest {
     @Test
     public void testDefend() throws Exception {
         Monster monster = Monster.newMonster();
-        Player player = new Player(15, 1, "punch", 2, 3, 1);
-        Integer startHP = monster.health;
+        Player player = new Player("test", 15, 1, "punch", 2, 3, 1);
+        Integer startHP = monster.getHealth();
         player.defend(monster);
-        assertNotEquals(startHP, monster.health);
+        assertNotEquals(startHP, monster.getHealth());
     }
 
-    @org.junit.Test
+    @Test
     public void testHeal() throws Exception {
-        Player player = new Player(15, 1, "punch", 2, 3, 1);
+        Player player = new Player("test", 15, 1, "punch", 2, 3, 1);
         Integer expected = 22;
         player.heal();
-        assertEquals(expected, player.health);
+        assertEquals(expected, player.getHealth());
     }
 
-    @org.junit.Test
+    @Test
     public void testGetLevel() throws Exception {
-        Player player = new Player(15, 1, "punch", 2, 3, 1);
+        Player player = new Player("test", 15, 1, "punch", 2, 3, 1);
         assertEquals(1, player.getLevel(), 0);
     }
 }

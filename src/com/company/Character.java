@@ -3,7 +3,8 @@ package com.company;
 import java.util.Random;
 
 public class Character {
-    public Integer health;
+    String name;
+    Integer health;
     Integer level;
     String attack;
     Integer minDamage;
@@ -36,5 +37,12 @@ public class Character {
      */
     public Integer getLevel() {
         return level;
+    }
+
+    /**
+     * @return objects name
+     */
+    public String getName() {
+        return name;
     }
 }
