@@ -40,7 +40,7 @@ public class PlayerHandler {
     /**
      * move player up
      * @param x players x position
-     * @return x munis one
+     * @return x minus one
      */
     public Integer moveLeft(Integer x) {
         x--;
@@ -73,7 +73,7 @@ public class PlayerHandler {
             System.out.println("Looks like you died, better luck next time.");
             System.out.println("----- Your score was: "+player.getScore()+" -----");
             try {
-                highScoreHandler.saveHighScore(player.getName(), player.getScore());
+                highScoreHandler.saveHighScore(player.getName(), player.getScore(), player.getKills());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -97,7 +97,6 @@ public class PlayerHandler {
                 setPosition(prevY, prevX);
                 break;
             case "+":
-                System.out.println("------- Player Level: "+aPlayer.getLevel()+"-------");
                 battleHandler.startBattle(aPlayer);
                 setPosition(y, x);
                 break;

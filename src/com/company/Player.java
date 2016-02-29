@@ -4,13 +4,13 @@ public class Player extends Character {
 
     private Integer xp;
     private Integer numOfHeals = 4;
+    private Integer kills = 0;
 
     /**
      * @param monster the monster is "attacked" by the player
      */
     public void defend(Monster monster) {
         Integer attackPoints = attack();
-
         monster.health = monster.health - attackPoints;
 
         System.out.printf(" You used %s causing %s HP damage (Monster has %s HP left)\n", attack, attackPoints, monster.getHealth());
@@ -18,6 +18,7 @@ public class Player extends Character {
         if (monster.health < 1) {
             System.out.printf("\nYou defeated %s (Level %s)\n", monster.getName(), monster.getLevel());
             addXP(5);
+            addKill();
             System.out.println("You gained 5 xp, your level is now "+getLevel());
             System.out.println("You earned 1 heal from the monster");
             numOfHeals++;
@@ -27,19 +28,17 @@ public class Player extends Character {
     /**
      * @param health players health
      * @param attack players attack
-     * @param level players level
      * @param maxDamage players max damage
      * @param minDamage players min damage
-     * @param xp players xp
      */
-    public Player(String name, Integer health, Integer level, String attack, Integer minDamage, Integer maxDamage, Integer xp) {
+    public Player(String name, Integer health, String attack, Integer minDamage, Integer maxDamage) {
         this.name = name;
         this.health = health;
-        this.level = level;
+        this.level = 1;
         this.attack = attack;
         this.minDamage = minDamage;
         this.maxDamage = maxDamage;
-        this.xp = xp;
+        this.xp = 0;
     }
 
     /**
@@ -92,6 +91,14 @@ public class Player extends Character {
 
     public Integer getScore() {
         return level * xp;
+    }
+
+    private void addKill() {
+        kills++;
+    }
+
+    public Integer getKills() {
+        return kills;
     }
 
     public void setHealth(int health) {

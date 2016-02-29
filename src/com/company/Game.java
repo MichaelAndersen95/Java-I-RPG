@@ -12,15 +12,22 @@ class Game {
      */
     public void start() {
         Boolean gameStarted = true;
-        Player player = new Player(getPlayerName(), 15, 1, "punch", 2, 3, 0);
+        Player player = new Player(getPlayerName(), 15, "punch", 2, 3);
 
         while (gameStarted) {
 
             Menu mainMenu = new Menu();
             mainMenu.Add("Show maps", () -> mapLoader.showMaps(player));
-            mainMenu.Add("Show high scores", () -> {
+            mainMenu.Add("Show high scores (highest score)", () -> {
                 try {
-                    highScoreHandler.getAllHighScores();
+                    highScoreHandler.getAllHighScoresByScore();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            });
+            mainMenu.Add("Show high scores (most kills)", () -> {
+                try {
+                    highScoreHandler.getAllHighScoresByKills();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

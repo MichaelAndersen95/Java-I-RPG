@@ -11,7 +11,7 @@ public class PlayerTest {
     @Test
     public void testDefend() throws Exception {
         Monster monster = Monster.newMonster();
-        Player player = new Player("test", 15, 1, "punch", 2, 3, 1);
+        Player player = new Player("test", 15, "punch", 2, 3);
         Integer startHP = monster.getHealth();
         player.defend(monster);
         assertNotEquals(startHP, monster.getHealth());
@@ -19,7 +19,7 @@ public class PlayerTest {
 
     @Test
     public void testHeal() throws Exception {
-        Player player = new Player("test", 15, 1, "punch", 2, 3, 1);
+        Player player = new Player("test", 15, "punch", 2, 3);
         Integer expected = 22;
         player.heal();
         assertEquals(expected, player.getHealth());
@@ -27,7 +27,7 @@ public class PlayerTest {
 
     @Test
     public void testGetLevel() throws Exception {
-        Player player = new Player("test", 15, 1, "punch", 2, 3, 1);
+        Player player = new Player("test", 15, "punch", 2, 3);
         assertEquals(1, player.getLevel(), 0);
     }
 }

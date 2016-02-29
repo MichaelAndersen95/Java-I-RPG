@@ -11,6 +11,7 @@ public class MapLoader {
     private final PlayerHandler playerHandler = new PlayerHandler();
 
     /**
+     * Not working if JAR file
      * @param filename loads the specified map from the Maps folder
      * @return returns a map
      * @throws FileNotFoundException

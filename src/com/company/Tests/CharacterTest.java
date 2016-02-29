@@ -17,7 +17,7 @@ public class CharacterTest {
 
     @Test
     public void testIsAlive() throws Exception {
-        Player player = new Player("test", 15, 1, "punch", 2, 3, 1);
+        Player player = new Player("test", 15, "punch", 2, 3);
         assertTrue(player.isAlive());
         player.setHealth(0);
         assertFalse(player.isAlive());
@@ -25,14 +25,14 @@ public class CharacterTest {
 
     @Test
     public void testGetHealth() throws Exception {
-        Player player = new Player("test", 15, 1, "punch", 2, 3, 1);
+        Player player = new Player("test", 15, "punch", 2, 3);
         Integer expected = 15;
         assertEquals(expected, player.getHealth());
     }
 
     @Test
     public void testGetLevel() throws Exception {
-        Player player = new Player("test", 15, 1, "punch", 2, 3, 1);
+        Player player = new Player("test", 15, "punch", 2, 3);
         Integer expected = 1;
         assertEquals(expected, player.getLevel());
     }
