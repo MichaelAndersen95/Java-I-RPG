@@ -95,7 +95,6 @@ public class Player extends Character {
                 ui.print("You have reached max level");
                 break;
             default:
-                level = 0;
                 break;
         }
     }
