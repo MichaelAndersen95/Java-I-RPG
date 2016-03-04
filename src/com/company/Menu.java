@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 class Menu {
     private final ArrayList<MenuItem> items = new ArrayList<>();
+    private final UI ui = new UI();
 
     private class MenuItem {
         private final MenuCallback menuCallback;
@@ -36,7 +37,7 @@ class Menu {
 
         for (int i = 0; i < items.size(); ++i) {
             MenuItem menuItem = items.get(i);
-            System.out.printf("[%d] %s \n", i + 1, menuItem.getText());
+            ui.print(String.format("[%d] %s \n", i + 1, menuItem.getText()));
         }
 
         System.out.println();
@@ -47,21 +48,12 @@ class Menu {
 
         try
         {
-            final String os = System.getProperty("os.name");
-
-            if (os.contains("Windows"))
-            {
-                Runtime.getRuntime().exec("cls");
-            }
-            else
-            {
-                Runtime.getRuntime().exec("clear");
-            }
+            ui.clear();
         }
         catch (final Exception ignored) { }
 
         if (chosen > items.size() || chosen < 1) {
-            System.out.println("Invalid option.\nPress enter to continue...");
+            ui.print("Invalid option.\nPress enter to continue...");
             in.nextLine();
             in.nextLine();
         } else {

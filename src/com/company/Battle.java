@@ -3,7 +3,7 @@ package com.company;
 class Battle {
 
     public Battle(Player player, Monster monster) {
-
+        UI ui = new UI();
         Menu combatMenu = new Menu();
 
         combatMenu.Add("Attack", () -> {
@@ -14,8 +14,11 @@ class Battle {
         });
         combatMenu.Add("Heal", player::heal);
 
-        System.out.printf("You ran into  %s (Level %s)\n", monster.getName(), monster.getLevel());
-        System.out.printf("%s(%s HP) wants to fight you(%s HP, Level %s)\n\n", monster.getName(), monster.getHealth(), player.getHealth(), player.getLevel());
+        ui.clear();
+        ui.print(String.format("You ran into  %s (Level %s)\n", monster.getName(), monster.getLevel()));
+        ui.print(String.format("%s(%s HP) wants to fight you(%s HP, Level %s)\n\n", monster.getName(),
+                monster.getHealth(), player.getHealth(), player.getLevel()));
+
         while (player.isAlive() && monster.isAlive()) {
             combatMenu.Show();
         }

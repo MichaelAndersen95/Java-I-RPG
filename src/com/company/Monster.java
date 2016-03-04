@@ -3,7 +3,7 @@ package com.company;
 import java.util.Random;
 
 public class Monster extends Character{
-    //private final String name;
+    private final UI ui = new UI();
 
     /**
      *
@@ -14,7 +14,6 @@ public class Monster extends Character{
         Integer i;
         Random random = new Random();
         i = random.nextInt(5);
-        System.out.println(i);
 
         if (i == 0) {
             return new Monster("Giant Zombie Duck", 15, 3, "kicked", 4, 5);
@@ -34,10 +33,10 @@ public class Monster extends Character{
 
         player.health = player.getHealth() - attackPoints;
 
-        System.out.printf(" %s %s you causing %s HP damage (You have %s HP left)\n", name, attack, attackPoints, player.getHealth());
+        ui.print(String.format(" %s %s you causing %s HP damage (You have %s HP left)\n", name, attack, attackPoints, player.getHealth()));
 
         if (player.health < 0) {
-            System.out.printf("You was killed by %s\n", name);
+            ui.print(String.format("You was killed by %s\n", name));
         }
     }
 
