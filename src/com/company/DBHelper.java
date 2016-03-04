@@ -2,7 +2,8 @@ package com.company;
 
 import java.sql.*;
 
-public class DBHelper {
+class DBHelper {
+    private final UI ui = new UI();
 
     public Connection getConnection() {
 
@@ -18,7 +19,7 @@ public class DBHelper {
                 return conn;
             }
         } catch (SQLException ex) {
-            ex.printStackTrace();
+            ui.print("Can't connect to database\n");
         }
         return null;
     }

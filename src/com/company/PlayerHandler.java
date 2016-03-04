@@ -1,14 +1,13 @@
 package com.company;
 
-import java.sql.SQLException;
-
 public class PlayerHandler {
 
     private String[][] aMap;
     private Integer prevX;
     private Integer prevY;
     private Player aPlayer;
-    HighScoreHandler highScoreHandler = new HighScoreHandler();
+    private final HighScoreHandler highScoreHandler = new HighScoreHandler();
+    private final UI ui = new UI();
 
     /**
      * move player up
@@ -70,13 +69,10 @@ public class PlayerHandler {
             movementChoice.Add("Move left", () -> checkPosition(y, moveLeft(x)));
             movementChoice.Show();
         } else {
-            System.out.println("Looks like you died, better luck next time.");
-            System.out.println("----- Your score was: "+player.getScore()+" -----");
-            try {
-                highScoreHandler.saveHighScore(player.getName(), player.getScore(), player.getKills());
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ui.print("Looks like you died, better luck next time\n");
+            ui.print("----- Your score was: "+player.getScore()+" -----\n");
+
+            highScoreHandler.saveHighScore(player.getName(), player.getScore(), player.getKills());
             System.exit(0);
         }
     }
@@ -90,22 +86,29 @@ public class PlayerHandler {
 
         BattleHandler battleHandler = new BattleHandler();
 
-        switch (aMap[y][x]) {
-            case "#":
-                System.out.print("You walked into a wall, try walking another way.");
-                aMap[prevY][prevX] = "X";
-                setPosition(prevY, prevX);
-                break;
-            case "+":
-                battleHandler.startBattle(aPlayer);
-                setPosition(y, x);
-                break;
-            case "O":
-                System.out.println("Congratulations!\nYou survived this level, please select another!");
-                break;
-            default:
-                setPosition(y, x);
-                break;
+        try {
+            switch (aMap[y][x]) {
+                case "#":
+                    ui.print("You walked into a wall, try walking another way.\n");
+                    aMap[prevY][prevX] = "X";
+                    setPosition(prevY, prevX);
+                    break;
+                case "+":
+                    battleHandler.startBattle(aPlayer);
+                    setPosition(y, x);
+                    break;
+                case "O":
+                    ui.print("Congratulations!\nYou survived this level, please select another!\n");
+                    break;
+                default:
+                    setPosition(y, x);
+                    break;
+        }
+            //player went outside map (happens on testmap.txt)
+        } catch (Exception e) {
+            ui.print("You can't go out of the map.\n");
+            showMap(aMap);
+            getDirectionChoice(aMap, y, x, aPlayer);
         }
     }
 
@@ -117,6 +120,7 @@ public class PlayerHandler {
 
         aMap[prevY][prevX] = ".";
         aMap[y][x] = "X";
+        ui.clear();
         showMap(aMap);
         getDirectionChoice(aMap, y, x, aPlayer);
     }
@@ -126,15 +130,14 @@ public class PlayerHandler {
      */
     public void showMap(String[][] map) {
 
-        Integer i, j;
+        //ui.clear();
 
-        System.out.print("\n\n");
+        Integer i, j;
 
         for (i = 0; i < map.length; i++) {
             for (j = 0; j < map.length; j++)
-                System.out.print(map[i][j] + "  ");
-            System.out.println();
+                ui.print(map[i][j] + "  ");
+            ui.print("\n");
         }
-        System.out.print("\n");
     }
 }

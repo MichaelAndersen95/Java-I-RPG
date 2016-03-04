@@ -9,36 +9,46 @@ import java.util.Scanner;
 public class MapLoader {
 
     private final PlayerHandler playerHandler = new PlayerHandler();
+    private final UI ui = new UI();
 
     /**
-     * Not working if JAR file
      * @param filename loads the specified map from the Maps folder
      * @return returns a map
-     * @throws FileNotFoundException
      */
-    public String[][] loadMapFromFile(String filename) throws FileNotFoundException {
+    public String[][] loadMapFromFile(String filename) {
 
         File inFile = new File(filename);
-        Scanner in = new Scanner(inFile);
+        Scanner in;
+        String[][] map = null;
 
-        Integer intLength = 0;
-        String[] length = in.nextLine().trim().split("\\s+");
-        for (String aLength : length) {
-            intLength++;
+        try {
+            in = new Scanner(inFile);
+
+            Integer intLength = 0;
+            String[] length = in.nextLine().trim().split("\\s+");
+            for (String aLength : length) {
+                intLength++;
+            }
+            in.close();
+
+            map = new String[intLength][intLength];
+
+            in = new Scanner(inFile);
+
+
+            Integer lineCount = 0;
+            while (in.hasNextLine()) {
+                String[] currentLine = in.nextLine().trim().split("\\s+");
+                System.arraycopy(currentLine, 0, map[lineCount], 0, currentLine.length);
+                lineCount++;
+            }
+
+            map[6][3] = "X";
+
+        } catch (FileNotFoundException e) {
+            String fileError = "\nFile not found\n";
+            ui.print(fileError);
         }
-        in.close();
-
-        String[][] map = new String[intLength][intLength];
-        in = new Scanner(inFile);
-
-        Integer lineCount = 0;
-        while (in.hasNextLine()) {
-            String[] currentLine = in.nextLine().trim().split("\\s+");
-            System.arraycopy(currentLine, 0, map[lineCount], 0, currentLine.length);
-            lineCount++;
-        }
-
-        map[6][3] = "X";
 
         return map;
     }
@@ -48,38 +58,33 @@ public class MapLoader {
      * @param player sends the player object to getDirectionChoice
      */
     public void showMaps(Player player) {
-        System.out.println("Please choose a map");
-
+        ui.print("Please choose a map\n");
         Menu menu = new Menu();
-
         URL url = MapLoader.class.getResource("Maps/");
+        File dir;
+
+        String folderError = "\nCan't find Maps folder\n";
         if (url == null) {
             // error - missing folder
-            System.out.print("Can't find Maps folder");
+            ui.print(folderError);
         } else {
-            File dir = null;
             try {
                 dir = new File(url.toURI());
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
 
-            // Add each level to menu
-            for (File nextFile : dir.listFiles()) {
+                // Add each level to menu
+                for (File nextFile : dir.listFiles()) {
 
-                menu.Add(nextFile.getName(), () -> {
-                    System.out.println("Loading "+nextFile.getName()+"\n");
-
-                    try {
+                    menu.Add(nextFile.getName(), () -> {
                         String level[][] = loadMapFromFile(nextFile.getPath());
                         Integer y = 6;
                         Integer x = 3;
+                        ui.clear();
                         playerHandler.showMap(level);
                         playerHandler.getDirectionChoice(level, y, x, player);
-                    } catch (FileNotFoundException e){
-                        e.printStackTrace();
-                    }
-                });
+                    });
+                }
+            } catch (URISyntaxException e) {
+                ui.print(folderError);
             }
         }
         menu.Show();

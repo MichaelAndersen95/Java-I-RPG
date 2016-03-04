@@ -1,11 +1,11 @@
 package com.company;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 class Game {
     private final MapLoader mapLoader = new MapLoader();
-    HighScoreHandler highScoreHandler = new HighScoreHandler();
+    private final HighScoreHandler highScoreHandler = new HighScoreHandler();
+    private final UI ui = new UI();
 
     /**
      * Start the main loop the game is running in, and show the main menu to the player
@@ -16,22 +16,13 @@ class Game {
 
         while (gameStarted) {
 
+            ui.clear();
             Menu mainMenu = new Menu();
             mainMenu.Add("Show maps", () -> mapLoader.showMaps(player));
-            mainMenu.Add("Show high scores (highest score)", () -> {
-                try {
-                    highScoreHandler.getAllHighScoresByScore();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
-            mainMenu.Add("Show high scores (most kills)", () -> {
-                try {
-                    highScoreHandler.getAllHighScoresByKills();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            });
+            mainMenu.Add("Show high scores (highest score)", highScoreHandler::getAllHighScoresByScore);
+            mainMenu.Add("Show high scores (most kills)", highScoreHandler::getAllHighScoresByKills);
+            mainMenu.Add("Export high scores from DB to XML", highScoreHandler::exportDBToXML);
+            mainMenu.Add("Show High Scores From XML", highScoreHandler::getHighScoresFromXML);
             mainMenu.Add("Quit", () -> System.exit(0));
 
             mainMenu.Show();
@@ -41,7 +32,8 @@ class Game {
 
     private String getPlayerName() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your name(no spaces): ");
+        String output = "Enter your name(no spaces): ";
+        ui.print(output);
         return scanner.next();
     }
 

@@ -5,6 +5,7 @@ public class Player extends Character {
     private Integer xp;
     private Integer numOfHeals = 4;
     private Integer kills = 0;
+    private final UI ui = new UI();
 
     /**
      * @param monster the monster is "attacked" by the player
@@ -13,14 +14,15 @@ public class Player extends Character {
         Integer attackPoints = attack();
         monster.health = monster.health - attackPoints;
 
-        System.out.printf(" You used %s causing %s HP damage (Monster has %s HP left)\n", attack, attackPoints, monster.getHealth());
+        ui.print(String.format(" You used %s causing %s HP damage (Monster has %s HP left)\n", attack, attackPoints,
+                monster.getHealth()));
 
         if (monster.health < 1) {
-            System.out.printf("\nYou defeated %s (Level %s)\n", monster.getName(), monster.getLevel());
+            ui.clear();
+            ui.print(String.format("\nYou defeated %s (Level %s)\n", monster.getName(), monster.getLevel()));
             addXP(5);
             addKill();
-            System.out.println("You gained 5 xp, your level is now "+getLevel());
-            System.out.println("You earned 1 heal from the monster");
+            ui.print("You gained 5 xp, your level is now "+getLevel()+"\nYou earned 1 heal from the monster\n\n");
             numOfHeals++;
         }
     }
@@ -47,7 +49,7 @@ public class Player extends Character {
     public void heal() {
         if (numOfHeals > 0) {
             health += 7;
-            System.out.printf("Your health is now: %s (%s heals left)\n", health, numOfHeals);
+            ui.print(String.format("Your health is now: %s (%s heals left)\n", health, numOfHeals));
             numOfHeals--;
         } else {
             System.out.println("You can't heal anymore");
@@ -73,15 +75,24 @@ public class Player extends Character {
             case 20:
                 level = 4;
                 break;
-            case 30:
+            case 25:
                 level = 5;
                 break;
-            case 40:
+            case 30:
                 level = 6;
                 break;
-            case 50:
+            case 35:
                 level = 7;
-                System.out.println("You have reached max level");
+                break;
+            case 40:
+                level = 8;
+                break;
+            case 45:
+                level = 9;
+                break;
+            case 50:
+                level = 10;
+                ui.print("You have reached max level");
                 break;
             default:
                 level = 0;
