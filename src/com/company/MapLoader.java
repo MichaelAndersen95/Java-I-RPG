@@ -10,12 +10,10 @@ public class MapLoader {
 
     private final PlayerHandler playerHandler = new PlayerHandler();
     private final UI ui = new UI();
-    private String fileError = "\nFile not found\n";
 
     /**
      * @param filename loads the specified map from the Maps folder
      * @return returns a map
-     * @throws FileNotFoundException
      */
     public String[][] loadMapFromFile(String filename) {
 
@@ -48,6 +46,7 @@ public class MapLoader {
             map[6][3] = "X";
 
         } catch (FileNotFoundException e) {
+            String fileError = "\nFile not found\n";
             ui.print(fileError);
         }
 
@@ -64,9 +63,10 @@ public class MapLoader {
         URL url = MapLoader.class.getResource("Maps/");
         File dir;
 
+        String folderError = "\nCan't find Maps folder\n";
         if (url == null) {
             // error - missing folder
-            ui.print("Can't find Maps folder");
+            ui.print(folderError);
         } else {
             try {
                 dir = new File(url.toURI());
@@ -84,7 +84,7 @@ public class MapLoader {
                     });
                 }
             } catch (URISyntaxException e) {
-                e.printStackTrace();
+                ui.print(folderError);
             }
         }
         menu.Show();

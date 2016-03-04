@@ -2,6 +2,8 @@ package com.company;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 class HighScoreHandler {
 
@@ -9,6 +11,7 @@ class HighScoreHandler {
     private final UI ui = new UI();
     private final XMLHandler xmlHandler = new XMLHandler();
     private final String sqlError = "\nCan't connect to database\n";
+    private List<HighScore> hSList = new ArrayList<>();
 
     /**
      * gets all high scores from database ordered by highest score
@@ -61,6 +64,34 @@ class HighScoreHandler {
         }
     }
 
+    public void exportDBToXML() {
+        try {
+            Connection conn = dbHelper.getConnection();
+            String query = "SELECT * FROM HighScores";
+
+            Statement statement;
+            statement = conn.createStatement();
+
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()){
+                String name = resultSet.getString("Name");
+                int score = resultSet.getInt("Score");
+                int kills = resultSet.getInt("Kills");
+
+                Integer id = resultSet.getRow();
+                HighScore highScore = new HighScore(id.toString(), name, score, kills);
+
+                hSList.add(highScore);
+
+            }
+        } catch (SQLException e) {
+            ui.print(sqlError);
+        }
+        saveHighScoresToXML(hSList);
+    }
+
+
     public void getHighScoresFromXML() {
         try {
             xmlHandler.readXML();
@@ -71,8 +102,8 @@ class HighScoreHandler {
 
     }
 
-    public void saveHighScoreToXML(String player, Integer score, Integer kills) {
-        xmlHandler.writeXML(player, score, kills);
+    private void saveHighScoresToXML(List<HighScore> highScoreList) {
+        xmlHandler.writeXML(highScoreList);
     }
 
     /**

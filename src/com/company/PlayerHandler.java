@@ -69,11 +69,10 @@ public class PlayerHandler {
             movementChoice.Add("Move left", () -> checkPosition(y, moveLeft(x)));
             movementChoice.Show();
         } else {
-            ui.print("Looks like you died, better luck next time.");
-            ui.print("----- Your score was: "+player.getScore()+" -----");
+            ui.print("Looks like you died, better luck next time\n");
+            ui.print("----- Your score was: "+player.getScore()+" -----\n");
 
             highScoreHandler.saveHighScore(player.getName(), player.getScore(), player.getKills());
-            highScoreHandler.saveHighScoreToXML(player.getName(), player.getScore(),player.getKills());
             System.exit(0);
         }
     }
@@ -87,23 +86,29 @@ public class PlayerHandler {
 
         BattleHandler battleHandler = new BattleHandler();
 
-        switch (aMap[y][x]) {
-            case "#":
-                ui.print("You walked into a wall, try walking another way.\n");
-                aMap[prevY][prevX] = "X";
-                setPosition(prevY, prevX);
-                break;
-            case "+":
-                battleHandler.startBattle(aPlayer);
-                setPosition(y, x);
-                break;
-            case "O":
-                //ui.clear();
-                ui.print("Congratulations!\nYou survived this level, please select another!\n");
-                break;
-            default:
-                setPosition(y, x);
-                break;
+        try {
+            switch (aMap[y][x]) {
+                case "#":
+                    ui.print("You walked into a wall, try walking another way.\n");
+                    aMap[prevY][prevX] = "X";
+                    setPosition(prevY, prevX);
+                    break;
+                case "+":
+                    battleHandler.startBattle(aPlayer);
+                    setPosition(y, x);
+                    break;
+                case "O":
+                    ui.print("Congratulations!\nYou survived this level, please select another!\n");
+                    break;
+                default:
+                    setPosition(y, x);
+                    break;
+        }
+            //player went outside map (happens on testmap.txt)
+        } catch (Exception e) {
+            ui.print("You can't go out of the map.\n");
+            showMap(aMap);
+            getDirectionChoice(aMap, y, x, aPlayer);
         }
     }
 

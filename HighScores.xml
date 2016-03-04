@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<HighScores>
+<HighScore id="1">
+<Player>BOb</Player>
+<Score>80</Score>
+<Kills>4</Kills>
+</HighScore>
+<HighScore id="2">
+<Player>Bob</Player>
+<Score>45</Score>
+<Kills>3</Kills>
+</HighScore>
+<HighScore id="3">
+<Player>Lars</Player>
+<Score>20</Score>
+<Kills>2</Kills>
+</HighScore>
+<HighScore id="4">
+<Player>Hans</Player>
+<Score>80</Score>
+<Kills>4</Kills>
+</HighScore>
+</HighScores>

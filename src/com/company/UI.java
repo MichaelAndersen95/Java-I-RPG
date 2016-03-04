@@ -1,6 +1,6 @@
 package com.company;
 
-public class UI {
+class UI {
     public void print(String output) {
         System.out.print(output);
     }

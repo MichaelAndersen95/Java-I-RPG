@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>JSF RPG</title>
+        <link type="text/css" rel="stylesheet" href="style.css" />
+    </h:head>
+
+    <h:body>
+
+        <h:form>
+
+            <h:outputLabel id="map" value="#{map.miniMap}" escape= "false"> </h:outputLabel>
+
+            <h:commandButton value="Move up" action="#{playerHandler.movementChoice(1)}">
+                <f:ajax event="click" render="map"> </f:ajax>
+            </h:commandButton>
+
+            <h:commandButton value="Move down" action="#{playerHandler.movementChoice(2)}">
+                <f:ajax event="click" render="map"> </f:ajax>
+            </h:commandButton>
+
+            <h:commandButton value="Move up" action="#{playerHandler.movementChoice(1)}">
+                <f:ajax event="click" render="map"> </f:ajax>
+            </h:commandButton>
+
+            <h:commandButton value="Move up" action="#{playerHandler.movementChoice(1)}">
+                <f:ajax event="click" render="map"> </f:ajax>
+            </h:commandButton>
+
+        </h:form>
+
+    </h:body>
+</html>

@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -16,70 +17,98 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 class XMLHandler {
     private final UI ui = new UI();
+    private String fileName = "HighScores.xml";
 
-    public void writeXML(String playerName, Integer playerScore, Integer playerKills) {
+    /**
+     * Writes high scores to HighScores.xml
+     * @param highScoreList list of high scores
+     */
+    public void writeXML(List<HighScore> highScoreList) {
         try {
 
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 
             Document document = documentBuilder.newDocument();
-            Element rootElement = document.createElement("highscores");
+            Element rootElement = document.createElement("HighScores");
             document.appendChild(rootElement);
 
-            Element highScore = document.createElement("highscore");
-            rootElement.appendChild(highScore);
-            highScore.setAttribute("id", "1");
+            //loops through highScoreList
+            for (HighScore aHighScoreList : highScoreList) {
 
-            //player element
-            Element player = document.createElement("Player");
-            player.appendChild(document.createTextNode(playerName));
-            highScore.appendChild(player);
+                rootElement.appendChild(getHighScore(document, aHighScoreList.getId(),
+                        aHighScoreList.getName(), aHighScoreList.getScore(),
+                        aHighScoreList.getKills()));
+            }
 
-            //score element
-            Element score = document.createElement("Score");
-            score.appendChild(document.createTextNode(playerScore.toString()));
-            highScore.appendChild(score);
-
-            //kills element
-            Element kills = document.createElement("Kills");
-            kills.appendChild(document.createTextNode(playerKills.toString()));
-            highScore.appendChild(kills);
+            document.normalize();
 
             //write to file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             DOMSource source = new DOMSource(document);
-            StreamResult result = new StreamResult(new File("highscores.xml"));
+            StreamResult result = new StreamResult(new File(fileName));
 
             transformer.transform(source, result);
 
-            ui.print("File saved");
+            ui.print("\n"+fileName+" saved\n\n");
 
         } catch (ParserConfigurationException | TransformerException e) {
-            e.printStackTrace();
+            ui.print("Error writing "+fileName);
         }
     }
 
-    public void readXML() throws ParserConfigurationException {
+    /**
+     *
+     * @param doc document
+     * @param id the players id
+     * @param name the players name
+     * @param score the players score
+     * @param kills the players kills
+     * @return highScore object
+     */
+    private Node getHighScore(Document doc, String id, String name, Integer score, Integer kills) {
+        Element highScore = doc.createElement("HighScore");
+        highScore.setAttribute("id", id);
+        highScore.appendChild(getHighScoreElements(doc, highScore, "Player", name));
+        highScore.appendChild(getHighScoreElements(doc, highScore, "Score", score.toString()));
+        highScore.appendChild(getHighScoreElements(doc, highScore, "Kills", kills.toString()));
+        return highScore;
+    }
+
+    /**
+     *
+     * @param doc document
+     * @param element element
+     * @param name element name
+     * @param value element value
+     * @return
+     */
+    // utility method to create text node
+    private Node getHighScoreElements(Document doc, Element element, String name, String value) {
+        Element node = doc.createElement(name);
+        node.appendChild(doc.createTextNode(value));
+        return node;
+    }
+
+    /**
+     * reads the content of HighScores.xml
+     */
+    public void readXML() {
         try {
-
-
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-
             Document document;
-
-
-            document = builder.parse(new File("highscores.xml"));
-
+            document = builder.parse(new File(fileName));
 
             //Get all high scores
-            NodeList nodeList = document.getElementsByTagName("highscore");
-            ui.print("============================");
+            NodeList nodeList = document.getElementsByTagName("HighScore");
+            ui.print("============================\n");
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
@@ -87,16 +116,20 @@ class XMLHandler {
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     //print details for each high score
                     Element element = (Element) node;
-                    ui.print("High Score id: " + element.getAttribute("id"));
-                    ui.print("Player: " + element.getElementsByTagName("player").item(0).getTextContent());
-                    ui.print("Score: " + element.getElementsByTagName("score").item(0).getTextContent());
-                    ui.print("Kills: " + element.getElementsByTagName("kills").item(0).getTextContent());
+                    ui.print("\nHigh Score id: " + element.getAttribute("id"));
+                    ui.print("\nPlayer: " + element.getElementsByTagName("Player").item(0).getTextContent());
+                    ui.print("\nScore: " + element.getElementsByTagName("Score").item(0).getTextContent());
+                    ui.print("\nKills: " + element.getElementsByTagName("Kills").item(0).getTextContent()+"\n");
                 }
+
             }
+            ui.print("\n\n");
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            ui.print("Couldn't find file highscores.xml\n");
+            ui.print("Couldn't find file "+fileName+"\n");
+        } catch (ParserConfigurationException e) {
+            ui.print("Error when reading "+fileName);
         }
 
 

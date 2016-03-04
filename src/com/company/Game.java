@@ -21,6 +21,7 @@ class Game {
             mainMenu.Add("Show maps", () -> mapLoader.showMaps(player));
             mainMenu.Add("Show high scores (highest score)", highScoreHandler::getAllHighScoresByScore);
             mainMenu.Add("Show high scores (most kills)", highScoreHandler::getAllHighScoresByKills);
+            mainMenu.Add("Export high scores from DB to XML", highScoreHandler::exportDBToXML);
             mainMenu.Add("Show High Scores From XML", highScoreHandler::getHighScoresFromXML);
             mainMenu.Add("Quit", () -> System.exit(0));
 
